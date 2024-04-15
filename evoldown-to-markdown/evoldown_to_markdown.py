@@ -101,10 +101,11 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
     for match_c in matches_c:
         material_type, custom_type, keywords, associated_keyword = match_c
         dict_matches_c[keywords] = [material_type, custom_type]
-    print(matches)
-    print(matches_c)
-    print(dict_matches)
-    print(dict_matches_c)
+
+    # print(matches)
+    # print(matches_c)
+    # print(dict_matches)
+    # print(dict_matches_c)
 
     def find_associated_type(key):
         # 首先在 dict_matches 中查找关键字
@@ -114,8 +115,6 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
         elif key in dict_matches_c:
             return dict_matches_c[key]
 
-    a1 = find_associated_type(' 广告测试')
-    print(a1)
     # 段落文本标记替换成HTML代码
     new_markdown_text = evoldown_text
 
@@ -175,9 +174,10 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
                 find_associated_svg = extract_modify_svg_content('Associated', icon_svg_changes)
             else:
                 associated_card = card_template.render(
+                    color_value='0 0% 70%',
                     keywords=associated_keyword
                 )
-                find_associated_svg = extract_modify_svg_content('NotFoundAssociate', icon_svg_changes)
+                find_associated_svg = extract_modify_svg_content('NotFoundAssociated', icon_svg_changes)
         else:
             associated_card = ''
             find_associated_svg = ''
@@ -218,13 +218,13 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
                 find_associated_svg = extract_modify_svg_content('Associated', icon_svg_changes)
             else:
                 associated_card = card_template.render(
+                    color_value='0 0% 70%',
                     keywords=associated_keyword
                 )
                 find_associated_svg = extract_modify_svg_content('NotFoundAssociated', icon_svg_changes)
         else:
             associated_card = ''
             find_associated_svg = ''
-
 
         tag_html_code = tag_template.render(
             material_card=material_card,
