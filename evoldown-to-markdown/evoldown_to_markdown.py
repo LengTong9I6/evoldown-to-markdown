@@ -128,19 +128,15 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
 <div style="display: flex; flex-direction: row; align-items: center;">
 {{ material_card }}
 {{ find_associated_svg }}
-{{ associated_card }}
-</div>
+{{ associated_card }}</div>
     """
     # 定义卡片 HTML 模板
     card_html_template = """<span style="display: flex; flex-direction: row; align-items: center; color: hsl({{ color_value }}); background-color: hsl({{ color_value }}/0.08); padding: 0 0.4em; border-radius: 0.4em;; line-height: 2.5em">
 <span style="display: flex; flex-direction: row; align-items: center; margin-right: 0.4em; ">
-{{ svg_code }}
-{% if custom_type %}
+{{ svg_code }} {% if custom_type %}
 <span style="">{{ custom_type }} |</span>
-{% endif %}
-</span>
-{{ keywords }}
-</span>
+{% endif %}</span>
+{{ keywords }}</span>
     """
 
     # 创建 Jinja2 模板对象
@@ -203,7 +199,7 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
         # print(tag_html_code)
         # 找到对应文本并替换
         new_markdown_text = new_markdown_text.replace(
-            f'\n{material_type}{keywords}{associated_keyword}\n', tag_html_code)
+            f'{material_type}{keywords}{associated_keyword}', tag_html_code)
 
     # c类型段落标记替换成HTML代码
     for match_c in matches_c:
@@ -255,7 +251,7 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
 
         # 找到对应文本并替换
         new_markdown_text = new_markdown_text.replace(
-            f'\n{material_type}{custom_type}{keywords}{associated_keyword}\n', tag_html_code)
+            f'{material_type}{custom_type}{keywords}{associated_keyword}', tag_html_code)
 
     # print(new_markdown_text)
 
@@ -265,4 +261,4 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
 
 
 # 测试
-convert_evoldown_to_markdown(r'markdown\example.md', r'markdown\example_output.md')
+convert_evoldown_to_markdown(r'markdown\草稿.md', r'markdown\草稿1.md')
