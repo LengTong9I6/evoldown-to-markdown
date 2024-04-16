@@ -82,6 +82,8 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
         evoldown_text = input_file.read()
         # print(evoldown_text)
 
+    # 识别标签语法
+
     # raw string 是一种特殊的字符串，它以 r 或 R 开头，并且对反斜杠 \ 不进行转义处理。
     # 正则表达式匹配：学习材料的类型，学习材料的关键词，关联的学习材料。
     pattern = r'(#[detva])( \S+)( \S+)?'
@@ -91,6 +93,8 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
     # 提取根据表达式提取内容
     matches = re.findall(pattern, evoldown_text)
     matches_c = re.findall(pattern_c, evoldown_text)
+
+    # 创建字典方便根据关键词寻找类型
     dict_matches = {}
     dict_matches_c = {}
     # 遍历 matches，将关键词和材料类型添加到字典中
@@ -107,6 +111,7 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
     # print(dict_matches)
     # print(dict_matches_c)
 
+    # 查询的函数实现
     def find_associated_type(key):
         # 首先在 dict_matches 中查找关键字
         if key in dict_matches:
@@ -153,16 +158,20 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
         # print(match)
         # 段落标签内容
         material_type, keywords, associated_keyword = match
+
         # 段落卡片数据
         material_card = card_template.render(
             color_value=card_color[material_type],
             svg_code=extract_modify_svg_content(icon_svg_filename[material_type], icon_svg_changes),
             keywords=keywords.strip(),
         )
+
         # 关联段落卡片数据
         if associated_keyword:
+            # 如果关联关键词存在
             associated_types = find_associated_type(associated_keyword)
             if associated_types:
+                # 找到关联段落
                 associated_type = associated_types[0]
                 associated_custom_type = associated_types[1]
                 associated_card = card_template.render(
@@ -173,15 +182,18 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
                 )
                 find_associated_svg = extract_modify_svg_content('Associated', icon_svg_changes)
             else:
+                # 找到关联段落
                 associated_card = card_template.render(
                     color_value='0 0% 70%',
                     keywords=associated_keyword
                 )
                 find_associated_svg = extract_modify_svg_content('NotFoundAssociated', icon_svg_changes)
         else:
+            # 如果没有关联关键词
             associated_card = ''
             find_associated_svg = ''
 
+        # 生成完整HTML代码
         tag_html_code = tag_template.render(
             material_card=material_card,
             find_associated_svg=find_associated_svg,
@@ -189,6 +201,7 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
         )
 
         # print(tag_html_code)
+        # 找到对应文本并替换
         new_markdown_text = new_markdown_text.replace(
             f'\n{material_type}{keywords}{associated_keyword}\n', tag_html_code)
 
@@ -196,6 +209,7 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
     for match_c in matches_c:
         # print(match_c)
         material_type, custom_type, keywords, associated_keyword = match_c
+
         # 段落卡片数据
         material_card = card_template.render(
             color_value=card_color[material_type],
@@ -203,10 +217,13 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
             custom_type=custom_type,
             keywords=keywords.strip(),
         )
+
         # 关联段落卡片数据
         if associated_keyword:
+            # 如果关联关键词存在
             associated_types = find_associated_type(associated_keyword)
             if associated_types:
+                # 找到关联段落
                 associated_type = associated_types[0]
                 associated_custom_type = associated_types[1]
                 associated_card = card_template.render(
@@ -217,21 +234,26 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
                 )
                 find_associated_svg = extract_modify_svg_content('Associated', icon_svg_changes)
             else:
+                # 没有关联段落
                 associated_card = card_template.render(
                     color_value='0 0% 70%',
                     keywords=associated_keyword
                 )
                 find_associated_svg = extract_modify_svg_content('NotFoundAssociated', icon_svg_changes)
         else:
+            # 如果没有关联关键词
             associated_card = ''
             find_associated_svg = ''
 
+        # 生成完整HTML代码
         tag_html_code = tag_template.render(
             material_card=material_card,
             find_associated_svg=find_associated_svg,
             associated_card=associated_card,
         )
         # print(tag_html_code)
+
+        # 找到对应文本并替换
         new_markdown_text = new_markdown_text.replace(
             f'\n{material_type}{custom_type}{keywords}{associated_keyword}\n', tag_html_code)
 
