@@ -1,3 +1,5 @@
+# 版本号
+__version__ = "0.0.0"
 # 引入正则表达式库
 import re
 # 引入系统操作库
@@ -262,3 +264,4 @@ def convert_evoldown_to_markdown(evoldown_file, markdown_file):
 
 # 测试
 convert_evoldown_to_markdown(r'markdown\草稿.md', r'markdown\草稿1.md')
+convert_evoldown_to_markdown(r'markdown\example.md', r'markdown\example_output.md')
