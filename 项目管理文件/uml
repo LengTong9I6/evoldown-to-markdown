@@ -1,0 +1,24 @@
+@startuml
+package "Evoldown转换脚本" {
+    [正则解析器] as parser
+    [SVG处理器] as svg
+    [模板渲染器] as template
+}
+
+database "SVG图标库" as icons
+frame "第三方库" {
+    [re] as re
+    [lxml] as lxml
+    [Jinja2] as jinja
+}
+
+[用户] --> parser : 提供Evoldown文件
+parser --> svg : 标签元数据
+svg --> template : 带图标的HTML片段
+template --> [Markdown文件] : 输出
+
+re --> parser : 正则匹配
+lxml --> svg : XML处理
+jinja --> template : 模板引擎
+icons --> svg : 读取SVG源文件
+@enduml
